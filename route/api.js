@@ -22,7 +22,22 @@ router.post("/api/workouts", (req, res) => {
 })
 router.put("/api/workouts/:id", (req, res) => {
     console.log("INSIDE put ROUTE", req.params.id, req.body)
-    db.Workout.create({}).then((data) => {
+        // db.Workout.create({}).then((data) => {
+        //         res.json(data)
+        //     })
+        //     .catch(err => {
+        //         res.json(err)
+        //     })
+    db.Workout.findByIdAndUpdate(req.params.id, { $push: { exercises: req.body } }, { new: true, runValidators: true }).then((data) => {
+        res.json(data)
+    }).catch(err => {
+        res.json(err)
+    })
+})
+router.get("/api/workouts/range", (req, res) => {
+
+    db.Workout.find({}).then((data) => {
+            console.log(data)
             res.json(data)
         })
         .catch(err => {
