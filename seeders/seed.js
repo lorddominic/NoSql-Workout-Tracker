@@ -124,3 +124,7 @@ db.Workout.deleteMany({})
         console.error(err);
         process.exit(1);
     });
+
+mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/workout", {
+    useNewUrlParser: true
+});
