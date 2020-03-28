@@ -3,17 +3,21 @@ const path = require("path");
 const db = require("../models");
 router.get("/api/workouts", (req, res) => {
 
-    db.Workout.find({}).then((data) => {
-            console.log(data)
+    db.Workout.find({}).sort({ date: -1 })
+        .then((data) => {
+            // data.forEach(records => records.setTotalDuration())
+            // console.log("b", data)
+            //res.json(data.toJSON({ virtuals: true }))
             res.json(data)
         })
         .catch(err => {
             res.json(err)
         })
 })
-router.post("/api/workouts", (req, res) => {
+router.post("/api/workouts", ({ body }, res) => {
     console.log("INSIDE API ROUTE")
-    db.Workout.create({}).then((data) => {
+    db.Workout.create(body).then((data) => {
+            console.log(data)
             res.json(data)
         })
         .catch(err => {
@@ -36,7 +40,9 @@ router.put("/api/workouts/:id", (req, res) => {
 })
 router.get("/api/workouts/range", (req, res) => {
 
-    db.Workout.find({}).then((data) => {
+    db.Workout.find().sort({ day: -1 }).limit(7)
+        .then((data) => {
+            data.reverse();
             console.log(data)
             res.json(data)
         })
